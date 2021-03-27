@@ -6,17 +6,8 @@ const FILES_TO_CACHE = [
   "./js/idb.js",
   "./js/index.js",
   "./css/styles.css",
+  "./manifest.json",
 ];
-
-// pull from cache first and fall back on network if cache does not exist
-// TODO: cache is registered and then created but will not load onto page when offline, seems like cache doesn't exist
-self.addEventListener("fetch", function (e) {
-  e.respondWith(
-    caches.match(e.request).then(function (request) {
-      return request || fetch(e.request);
-    })
-  );
-});
 
 // Cache resources
 self.addEventListener("install", function (e) {
@@ -48,6 +39,16 @@ self.addEventListener("activate", function (e) {
           }
         })
       );
+    })
+  );
+});
+
+// pull from cache first and fall back on network if cache does not exist
+// TODO: cache is registered and then created but will not load onto page when offline, seems like cache doesn't exist
+self.addEventListener("fetch", function (e) {
+  e.respondWith(
+    caches.match(e.request).then(function (request) {
+      return request || fetch(e.request);
     })
   );
 });
